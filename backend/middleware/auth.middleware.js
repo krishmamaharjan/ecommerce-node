@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
-export const protectRoute = async(req, res,next) =>
+export const protectRoute = async(req, res, next) =>
 {
     try{
         const accessToken = req.cookies.accessToken;
@@ -17,12 +17,11 @@ export const protectRoute = async(req, res,next) =>
 
         if(!user)
         {
-            return res.status(401).json({message: "User not found"});
-
-            req.user= user;
-
-            next();
+            return res.status(401).json({message: "User not found"}); 
         }
+        req.user= user;
+
+        next();
         }catch(error)
         {
             if(error.name === "TokenExpiredError")
@@ -41,7 +40,7 @@ export const protectRoute = async(req, res,next) =>
 
 export const adminRoute = async(req,res,next) =>
 {
-    if(re.user && req.user.role === "admin")
+    if(res.user && req.user.role === "admin")
     {
         next();
 
